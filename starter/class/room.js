@@ -52,17 +52,28 @@ class Room {
   }
 
   getItemByName(name) {
-
-    // Fill this in
-
+    let items = this.items.reduce((searchItem, item) => {
+      if (item.name === name) return item;
+      return searchItem;
+    }, {})
+    return items;
   }
 
   getEnemyByName(name) {
+    const { World } = require('./world');
 
+    let result = this.getEnemies().reduce((accum, enemy) => {
+      if (enemy.name === name) {
+        return enemy;
+      }
+
+      return accum;
+    }, {});
+
+    return result;
     // Fill this in
-
+  }
 }
-
 module.exports = {
-  Room,
+  Room
 };

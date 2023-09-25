@@ -1,6 +1,6 @@
-const {Character} = require('./character');
-const {Enemy} = require('./enemy');
-const {Food} = require('./food');
+const { Character } = require('./character');
+const { Enemy } = require('./enemy');
+const { Food } = require('./food');
 
 class Player extends Character {
 
@@ -27,38 +27,57 @@ class Player extends Character {
       console.log(`${this.name} is not carrying anything.`);
     } else {
       console.log(`${this.name} is carrying:`);
-      for (let i = 0 ; i < this.items.length ; i++) {
+      for (let i = 0; i < this.items.length; i++) {
         console.log(`  ${this.items[i].name}`);
       }
     }
   }
 
   takeItem(itemName) {
+    let items = this.currentRoom.items.filter(item => {
+      if (item.name === itemName) {
+        this.items.push(item)
+        return false;
+      }
+      return true
+    })
 
-    // Fill this in
+    this.currentRoom.items = items;
 
   }
 
   dropItem(itemName) {
-
-    // Fill this in
-
+    let item = this.items.find(item => item.name === itemName);
+    this.currentRoom.items.push(item);
+    this.items.splice(this.items.indexOf(item), 1)
   }
 
   eatItem(itemName) {
-
-    // Fill this in
-
+    let item = this.items.filter(itm => itm.name === itemName)[0]
+    if (item instanceof Food) {
+      this.items.splice(this.items.indexOf(item), 1)
+    }
   }
 
   getItemByName(name) {
-
-    // Fill this in
-
+    let items = this.items.reduce((searchItem, item) => {
+      if (item.name === name) {
+        return item;
+      }
+      return searchItem;
+    }, {})
+    return items
   }
 
   hit(name) {
+    const enemy = this.currentRoom.getEnemyByName(name);
 
+    if (!(enemy.name)) {
+      return;
+    }
+
+    enemy.applyDamage(this.strength);
+    enemy.attackTarget = this;
     // Fill this in
 
   }
